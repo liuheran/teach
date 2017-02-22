@@ -66,7 +66,6 @@ class UserController extends BaseController
         }else{
             $data = null;
         }
-        return $this->success($data);
         //接口结束时间
         if(Yii::$app->params['enableTrack']){
             //存入showtime_track库
@@ -76,7 +75,7 @@ class UserController extends BaseController
             $arguments = json_encode($params);
             Track::addTrack($spendTime, $trackName,$arguments); //入库
         }
-    
+        return $this->success($data);
     }
     
     /**

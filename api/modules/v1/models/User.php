@@ -249,12 +249,7 @@ class User extends ActiveRecord implements IdentityInterface ,RateLimitInterface
     public function getUserInfo($data){
     
         $cn = \Yii::$app->db;
-        $sql = "SELECT ROUND(6378.138*2*ASIN(SQRT(POW(SIN((latitude*PI()/180-".$data['latitude']."*PI()/180)/2),2)+COS(latitude*PI()/180)*COS(".$data['latitude']."*PI()/180)*POW(SIN((longitude *PI()/180-".$data['longitude']."*PI()/180)/2),2)))*1000) AS distance, id,username,logoUrl
-				FROM ".$this->tableName()."
-				WHERE id <> ".$data['userId']."
-				HAVING distance<=".$data['distance']."
-				ORDER BY distance
-				LIMIT 8";
+        $sql = "SELECT * FROM (SELECT ROUND(6378.138*2*ASIN(SQRT(POW(SIN((latitude*PI()/180-".$data['latitude']."*PI()/180)/2),2)+COS(latitude*PI()/180)*COS(".$data['latitude']."*PI()/180)*POW(SIN((longitude *PI()/180-".$data['longitude']."*PI()/180)/2),2)))*1000) AS distance, id,username,logoUrl FROM ".$this->tableName()." WHERE id <> ".$data['userId']." HAVING distance<=".$data['distance'].") AS u LEFT JOIN (SELECT protectId FROM ".Protect::tableName()." WHERE userId=".$data['userId'].") AS p ON u.id=p.protectId  ORDER BY distance LIMIT 1000";
         $result = $cn->createCommand($sql)->queryAll();
         return $result;
     }

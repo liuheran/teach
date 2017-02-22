@@ -96,11 +96,11 @@ class Protect extends User implements IdentityInterface ,RateLimitInterface
     public function lists($start,$pageSize,$data){
         $connection= \Yii::$app->db;
         if($data['type'] == 0) {
-            $sql="SELECT p.*,u.userName,CONCAT('0') as count FROM ".self::tableName()." AS p
+            $sql="SELECT p.*,u.userName,CONCAT('0') as count,age,sex,logoUrl,grade FROM ".self::tableName()." AS p
             LEFT JOIN user AS u ON p.protectId=u.id
             WHERE p.userId = '".$data['userId']."' ORDER BY p.id DESC LIMIT $start,$pageSize";
         } else {
-            $sql="SELECT p.*,u.userName,CONCAT('0') as count FROM ".self::tableName()." AS p
+            $sql="SELECT p.*,u.userName,CONCAT('0') as count,age,sex,logoUrl,grade FROM ".self::tableName()." AS p
             LEFT JOIN user AS u ON p.userId=u.id
             WHERE p.protectId = '".$data['userId']."' ORDER BY p.id DESC LIMIT $start,$pageSize";
         }
