@@ -6,6 +6,7 @@ use api\modules\v1\models\Activity;
 use api\modules\v1\models\Track;
 use api\modules\v1\models\Like;
 use api\modules\v1\models\Comment;
+use api\modules\v1\models\User;
 class ActivityController extends BaseController  
 {
     /**
@@ -110,7 +111,7 @@ class ActivityController extends BaseController
             $data = array(
                 'userId'=>$userId,
             );
-    
+            $data['cover'] = User::getUserInfoByUserId($userId)['cover'];
             $numResult = $activity->countNum($data);//总条数
     
             if ($numResult > 0) {

@@ -238,7 +238,7 @@ class UserController extends BaseController
     
     /**
      * @author jiangyuying
-     * @date 2015年10月13日下午2:27:54
+     * @date 2016年10月13日下午2:27:54
      * 上传或修改头像
      */
     public function actionUploadLogoUrl(){
@@ -289,6 +289,57 @@ class UserController extends BaseController
     /**
      * @author jiangyuying
      * @date 2016年10月13日下午2:27:54
+     * 上传或修改头像
+     */
+    public function actionUploadCover()
+    {
+        $user = new User();
+        $width  = 200; //默认生成缩略图片宽度为200px
+    
+        if (isset($_POST) && isset($_FILES)){
+    
+            $userId = isset($_POST['userId']) && is_numeric($_POST['userId']) ? $_POST['userId']:0;
+    
+            if ($userId <= 0) {
+                $data['Status'] = 1330;//参数有误
+                return $this->failed(100320);//参数有误
+            }
+    
+            $path = './uploads/user/'.$userId; //图片上传路径
+            //上传图片操作获取图片地址
+    
+            $upload = new FileUpload($path);
+            $upload -> set('maxsize', '8000000'); //设置最大8M图片
+            if(!$upload -> upload('image')){
+                $data['Status'] = 1331;//参数有误
+                return $this->failed(100320);//参数有误
+            }
+            $name = $upload->getFileName();
+            $thumbName = $upload->thumb($name, $width,0,'200_');//存数据库 200*120
+            $upload->thumb($name, 120,0,'120_');//生成 60*60
+    
+            list($width, $height) = getimagesize($path.'/'.$thumbName);
+    
+            //存储
+            $url = yii::$app->params['imageUrl'].trim($path,'.').'/'.$thumbName;
+            $fields = " cover='{$url}'";
+            $id = $user->updateUserInfo($userId,$fields);
+            if($id>0){
+                $data=array('user_id'=>$userId,'cover'=>$url);
+                return $this->success($data);//参数有误
+            }else {
+                $data['Status'] = 1332;//上传失败
+                return $this->failed(100320);//参数有误
+            }
+        }else{
+            $data['Status'] = 1333;//上传失败
+            return $this->failed(100320);//参数有误
+        }
+    }
+    
+    /**
+     * @author jiangyuying
+     * @date 2016年10月13日下午2:27:54
      * 上传动态图片
      */
     public function actionUploadActivityImage(){
@@ -308,7 +359,7 @@ class UserController extends BaseController
     		//上传图片操作获取图片地址
     
     		$upload = new FileUpload($path);
-    		$upload -> set('maxsize', '8000000'); //设置最大8M图片
+    		$upload -> set('maxsize', '10000000'); //设置最大10M图片
     		if(!$upload -> upload('image')){
     			$data['Status'] = 1331;//参数有误
     			return $this->failed(100320);//参数有误

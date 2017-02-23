@@ -73,7 +73,7 @@ class Like extends User implements IdentityInterface ,RateLimitInterface
      */
     public function lists($data){
         $connection= \Yii::$app->dbSlave;
-        $sql="SELECT l.id AS likeId,u.id AS uId,u.username FROM ".self::tableName()." AS l LEFT JOIN user AS u ON l.userId=u.id WHERE l.activityId IN (".$data['activityId'].")";
+        $sql="SELECT l.id AS likeId,u.id AS uId,u.username,activityId FROM ".self::tableName()." AS l LEFT JOIN user AS u ON l.userId=u.id WHERE l.activityId IN (".$data['activityId'].")";
         return $connection->createCommand ($sql)->queryAll();
     }
 }

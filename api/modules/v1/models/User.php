@@ -31,7 +31,7 @@ class User extends ActiveRecord implements IdentityInterface ,RateLimitInterface
     #大于2，譬如下面  6秒内只能访问三次  
     # 文档标注：返回允许的请求的最大数目及时间，例如，[100, 600] 表示在600秒内最多100次的API调用。  
     public  function getRateLimit($request, $action){  
-         return [3, 6];  
+         return [100, 300];  
     }  
     # 文档标注： 返回剩余的允许的请求和相应的UNIX时间戳数 当最后一次速率限制检查时。  
     public  function loadAllowance($request, $action){  
