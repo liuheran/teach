@@ -6,7 +6,7 @@ use Yii;
 
 /**
  * This is the model class for table "Contact".
- * test one two
+ * test
  * @property string $id
  * @property string $userId
  * @property string $contactId
