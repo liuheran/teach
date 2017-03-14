@@ -10,7 +10,7 @@ use Yii;
  * @property string $id
  * @property string $userId two
  * @property string $contactId one
- * @property string $created two
+ * @property string $created two three
  */
 class Contact extends \yii\db\ActiveRecord
 {
