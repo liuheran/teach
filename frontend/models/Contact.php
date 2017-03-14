@@ -9,7 +9,7 @@ use Yii;
  * test one two
  * @property string $id two
  * @property string $userId
- * @property string $contactId
+ * @property string $contactId two
  * @property string $created
  */
 class Contact extends \yii\db\ActiveRecord
