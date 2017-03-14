@@ -6,8 +6,8 @@ use Yii;
 
 /**
  * This is the model class for table "Contact".
- * test one
- * @property string $id
+ * test one two
+ * @property string $id two
  * @property string $userId
  * @property string $contactId
  * @property string $created
