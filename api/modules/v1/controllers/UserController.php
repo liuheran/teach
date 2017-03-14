@@ -451,6 +451,8 @@ class UserController extends BaseController
     	if (! empty($user)) {
     		$data['username'] = $user['username'];
     		$data['logoUrl'] = $user['logoUrl'];
+    		$data['cover'] = $user['cover'];
+    		$data['userId'] = $user['id'];
     		return $this->success($data);	//参数有误
     	} else {
     		return $this->failed(100401);	//参数有误
@@ -466,5 +468,41 @@ class UserController extends BaseController
     		Track::addTrack($spendTime, $trackName,$arguments); //入库
     	}
     }
+    
+    /**
+     * Signs user up.
+     *
+     * @return mixed
+     */
+    public function actionGetUserById()
+    {
+        $startDate = Track::microtimeFloat(); //开始时间
+        $param = Yii::$app->request->post();
+        if (! isset($param['userId']) || empty($param['userId'])) {
+            return ['status'=>100501,'msg'=>Yii::$app->params['errorCode']['100501']];
+        }
+        $model = new User();
+        $user = $model->findOne($param['userId']);
+        if (! empty($user)) {
+            $data['username'] = $user['username'];
+            $data['logoUrl'] = $user['logoUrl'];
+            $data['cover'] = $user['cover'];
+            $data['userId'] = $user['id'];
+            return $this->success($data);	//参数有误
+        } else {
+            return $this->failed(100401);	//参数有误
+        }
+    
+        //接口结束时间
+        if(Yii::$app->params['enableTrack']){
+            //存入showtime_track库
+            $endDate = Track::microtimeFloat();//结束时间
+            $spendTime = $endDate-$startDate; //花费时间
+            $trackName=__CLASS__.'/'.__FUNCTION__; //方法名
+            $arguments = json_encode($params);
+            Track::addTrack($spendTime, $trackName,$arguments); //入库
+        }
+    }
+    
     
 }

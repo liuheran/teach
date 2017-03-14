@@ -111,7 +111,7 @@ class ActivityController extends BaseController
             $data = array(
                 'userId'=>$userId,
             );
-            $data['cover'] = User::getUserInfoByUserId($userId)['cover'];
+//             $data['cover'] = User::getUserInfoByUserId($userId)['cover'];
             $numResult = $activity->countNum($data);//总条数
     
             if ($numResult > 0) {
